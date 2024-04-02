@@ -1,0 +1,106 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int sum_n(int n);                                                           // Обчислення суми
+void tail_r(int* mas, int n, int a, int d, int ind);            // Хвостова рекурсія
+void linear_r(int* mas, int n, int a, int d);                             // Лінійна рекурсія
+void print(int* mas, int n);                                                // Виведення масиву
+bool is_prime(int n);                               // Рекурсивна перевірка на простоту
+void arithmetic_progression(int a, int d, int n);               // Обчислення і вивід звичайної арифметичної прогресії
+
+int main()
+{
+    setlocale(LC_ALL, "Ukr");
+    cout << "Завдання 1: cтворити арифметичну прогресiю за допомогою рекурсiї" << endl << endl;
+    int a, d, n, ind = 1;                                                  // ind - індекс для масиву
+    int mas[100];
+
+    cout << "Введiть розмiр масиву:";
+    cin >> n;
+    cout << "Введiть перший член масиву(цiле число):";
+    cin >> a;
+    cout << "Введiть рiзницю арифметичної прогресiї:";
+    cin >> d;
+
+    cout << "\nАрифметична прогресiя:" << endl;
+    arithmetic_progression(a, d, n);
+
+    tail_r(mas, n, a, d, ind);
+    cout << "\nАрифметична прогресiя за хвостовою рекурсiєю:" << endl;
+    print(mas, n);                                                          // Виведення масиву
+
+    for (int i = 0; i < n; i++) // Заповнення масиву 0 для іншої функції
+        mas[i] = 0;
+
+    linear_r(mas, n, a, d);                                          // Лінійна рекурсія
+    cout << "Арифметична прогресiя за лiнiйною рекурсiєю:" << endl;
+    print(mas, n);
+
+    int r;
+    int sum = 0;
+    cout << endl;
+    cout << "Завдання 2: знайти суму цифр заданого натурального числа." << endl;
+    cout << "Введiть число:";
+    cin >> r;
+    cout << "Сума цифр числа:" << sum_n(r) << endl;
+
+    cout << endl;
+    cout << "Завдання 3: рекурсивна перевiрка чи є число простим." << endl;
+    cout << "Введiть число:";
+    cin >> r;
+    if (is_prime(r))
+        cout << r << " - не просте число." << endl;
+    else
+        cout << r << " - просте число." << endl;
+    system("pause");
+    return 0;
+}
+
+int sum_n(int n)                                                             // Обчислення суми цифр числа
+{
+    if (n == 0)
+        return 0;
+    return n % 10 + sum_n(n / 10);
+}
+
+void tail_r(int* mas, int n, int a, int d, int ind)             // Хвостова рекурсія
+{
+    if (ind == n)                                                         // Умова для завершення рекурсії
+        return;
+    mas[ind] = a + d * ind;                                       // Формула для обчислення елементів арифметичної прогресії
+    tail_r(mas, n, a, d, ind + 1);                        // Рекурсивний виклик зі збільшеним індексом
+}
+
+void linear_r(int* mas, int n, int a, int d)                               // Лінійна рекурсія
+{
+    if (n == 0)                                                              // Перевірка на кінець рекурсії
+        return;
+    linear_r(mas, n - 1, a, d);                                      // Рекурсивний виклик зі зменшеним n
+    mas[n - 1] = a + d * (mas[n - 2] / d + 1);   // Формула для обчислення елементів арифметичної прогресії
+}
+
+void print(int* mas, int n)                                                  // Виведення масиву
+{
+    for (int i = 0; i < n; i++)                                         // Виведення масиву
+        cout << mas[i] << " ";
+    cout << endl;
+}
+
+bool is_prime(int n)                                     // Рекурсивна перевірка на простоту
+{
+    if ((n % 2) == 1)
+        return false;
+    if (n == 1)
+        return true;
+    return is_prime(--n);
+}
+
+
+void arithmetic_progression(int a, int d, int n)              // Обчислення і вивід звичайної арифметичної прогресії
+{
+    for (int i = 0; i < n; ++i) {
+        cout << a + i * d << " ";
+    }
+
+}
